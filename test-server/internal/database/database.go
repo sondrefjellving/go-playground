@@ -66,3 +66,17 @@ func (db *DB) writeDB(dbStruct DBStructure) error {
 	return nil
 }
 
+func (db *DB) readDB() (DBStructure, error) {
+	dbAsJson, err := os.ReadFile(db.path)
+	if err != nil {
+		return DBStructure{}, db.setupDB()
+	}
+
+	dbStruct := DBStructure{}
+	err = json.Unmarshal(dbAsJson, &dbStruct)
+	if err != nil {
+		return DBStructure{}, err
+	}
+
+	return dbStruct, nil
+}

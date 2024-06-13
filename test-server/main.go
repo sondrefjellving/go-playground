@@ -24,6 +24,8 @@ func main() {
 	fmt.Printf("Database created:%v", db)
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("GET /api/users", cfg.handlerUsersGet)
+
 	server := http.Server{
 		Addr: port,
 		Handler: mux,
