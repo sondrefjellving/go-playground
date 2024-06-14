@@ -21,7 +21,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Database created:%v", db)
+	cfg := apiConfig{
+		db: db,
+	}
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /api/users", cfg.handlerUsersGet)
@@ -31,6 +34,6 @@ func main() {
 		Handler: mux,
 	}
 
-	fmt.Printf("Starting server at port%s", port)
+	fmt.Printf("Starting server at port%s\n", port)
 	server.ListenAndServe()
 }
