@@ -28,6 +28,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /api/users", cfg.handlerUsersGet)
+	mux.HandleFunc("POST /api/users", cfg.handlerUsersPost)
 
 	server := http.Server{
 		Addr: port,

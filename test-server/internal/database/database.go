@@ -16,6 +16,7 @@ type DBStructure struct {
 }
 
 type User struct {
+	Id		int 	`json:"id"`
 	Name 	string `json:"name"`
 	Age 	int	   `json:"age"`	
 }
@@ -35,6 +36,9 @@ func NewDB(path string) (*DB, error) {
 }
 
 func (db *DB) setupDB() error {
+	if _, err := os.Open(db.path); err != os.ErrNotExist {
+		return nil
+	}
 	file, err := os.Create(db.path)
 	if err != nil {
 		return err
