@@ -30,6 +30,7 @@ func main() {
 	mux.HandleFunc("GET /api/users", cfg.handlerUsersGet)
 	mux.HandleFunc("GET /api/users/{userId}", cfg.handlerUsersGetById)
 	mux.HandleFunc("POST /api/users", cfg.handlerUsersPost)
+	mux.HandleFunc("DELETE /api/users/{userId}", cfg.handlerUsersDeleteById)
 
 	server := http.Server{
 		Addr: port,

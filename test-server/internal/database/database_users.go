@@ -3,7 +3,6 @@ package database
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 )
 
 func (db *DB) GetUsers() ([]User, error) {
@@ -36,7 +35,6 @@ func (db *DB) GetUserById(id int) (User, error) {
 func (db *DB) CreateUser(payload []byte) (User, error) {
 	data, err := db.readDB()
 	if err != nil {
-		fmt.Println("1")
 		return User{}, err
 	}
 
@@ -46,14 +44,29 @@ func (db *DB) CreateUser(payload []byte) (User, error) {
 	}
 	err = json.Unmarshal(payload, &user)
 	if err != nil {
-		fmt.Println("2")
 		return User{}, err
 	}
 
 	data.Users[id] = user
 	if err := db.writeDB(data); err != nil {
-		fmt.Println("3")
 		return User{}, nil
 	}
 	return user, nil
+}
+
+func (db *DB) DeleteUserById(id int) error {
+	data, err := db.readDB()
+	if err != nil {
+		return err
+	}
+
+	if _, exists := data.Users[id]; !exists {
+		return errors.New("cannot delete entry because it does not exist")
+	}
+	
+	delete(data.Users, id)
+	if err := db.writeDB(data); err != nil {
+		return err
+	}
+	return nil
 }
