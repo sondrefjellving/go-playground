@@ -2,6 +2,7 @@ package database
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"sync"
 )
@@ -36,7 +37,7 @@ func NewDB(path string) (*DB, error) {
 }
 
 func (db *DB) setupDB() error {
-	if _, err := os.Open(db.path); err != os.ErrNotExist {
+	if _, err := os.Open(db.path); !errors.Is(err, os.ErrNotExist) {
 		return nil
 	}
 	file, err := os.Create(db.path)

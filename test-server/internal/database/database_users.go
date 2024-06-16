@@ -2,6 +2,7 @@ package database
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -17,6 +18,19 @@ func (db *DB) GetUsers() ([]User, error) {
 	}
 
 	return users, nil
+}
+
+func (db *DB) GetUserById(id int) (User, error) {
+	data, err := db.readDB()
+	if err != nil {
+		return User{}, err
+	}
+	user, exists := data.Users[id]
+	if !exists {
+		return User{}, errors.New("Cannot find user with id: " + string(id))
+	}
+
+	return user, nil
 }
 
 func (db *DB) CreateUser(payload []byte) (User, error) {
