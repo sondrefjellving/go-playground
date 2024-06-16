@@ -38,7 +38,7 @@ func (db *DB) CreateUser(payload []byte) (User, error) {
 		return User{}, err
 	}
 
-	id := len(data.Users)
+	id := getCorrectId(data.Users) 
 	user := User{
 		Id: id,
 	}
@@ -69,4 +69,14 @@ func (db *DB) DeleteUserById(id int) error {
 		return err
 	}
 	return nil
+}
+
+func getCorrectId(users map[int]User) int {
+	id := len(users)
+	for {
+		if _, exists := users[id]; !exists {
+			return id
+		}
+		id++
+	}
 }
